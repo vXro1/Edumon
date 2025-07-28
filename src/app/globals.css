@@ -1,26 +1,411 @@
+/* globals.css - Compatible con Tailwind CSS v4 */
+
 @import "tailwindcss";
 
+/* Variables CSS para la paleta de colores */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --azul-oscuro: #19407b;
+  --azul-medio: #0075bf;
+  --azul-claro: #08dcff;
+  --gris-claro: #f8fafc;
+  --gris-medio: #e2e8f0;
+  --verde-exito: #10b981;
+  --rojo-error: #ef4444;
+  --amarillo-pendiente: #f59e0b;
+  --blanco: #ffffff;
+  --negro: #1f2937;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Configuración base */
+body {
+  background-color: white;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Colores de fondo personalizados */
+.bg-azul-oscuro { 
+  background-color: var(--azul-oscuro); 
+}
+.bg-azul-medio { 
+  background-color: var(--azul-medio); 
+}
+.bg-azul-claro { 
+  background-color: var(--azul-claro); 
+}
+.bg-gris-claro { 
+  background-color: var(--gris-claro); 
+}
+.bg-gris-medio { 
+  background-color: var(--gris-medio); 
+}
+.bg-verde-exito { 
+  background-color: var(--verde-exito); 
+}
+.bg-rojo-error { 
+  background-color: var(--rojo-error); 
+}
+
+/* Colores de texto personalizados */
+.text-azul-oscuro { 
+  color: var(--azul-oscuro); 
+}
+.text-azul-medio { 
+  color: var(--azul-medio); 
+}
+.text-azul-claro { 
+  color: var(--azul-claro); 
+}
+.text-verde-exito { 
+  color: var(--verde-exito); 
+}
+.text-rojo-error { 
+  color: var(--rojo-error); 
+}
+
+/* Gradiente para títulos */
+.text-gradient {
+  background: linear-gradient(135deg, var(--azul-oscuro) 0%, var(--azul-medio) 50%, var(--azul-claro) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Tarjetas neumórficas */
+.neu-card {
+  background: var(--blanco);
+  border-radius: 16px;
+  box-shadow: 
+    8px 8px 16px rgba(163, 177, 198, 0.15),
+    -8px -8px 16px rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.neu-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    12px 12px 24px rgba(163, 177, 198, 0.2),
+    -12px -12px 24px rgba(255, 255, 255, 0.8);
+}
+
+/* Botones neumórficos */
+.neu-button {
+  background: var(--gris-claro);
+  border-radius: 12px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--negro);
+  box-shadow: 
+    6px 6px 12px rgba(163, 177, 198, 0.2),
+    -6px -6px 12px rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.neu-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    8px 8px 16px rgba(163, 177, 198, 0.25),
+    -8px -8px 16px rgba(255, 255, 255, 0.9);
+}
+
+.neu-button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    4px 4px 8px rgba(163, 177, 198, 0.3) inset,
+    -4px -4px 8px rgba(255, 255, 255, 0.7) inset;
+}
+
+/* Botón primario neumórfico */
+.neu-button-primary {
+  background: linear-gradient(135deg, var(--azul-medio) 0%, var(--azul-oscuro) 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  box-shadow: 
+    6px 6px 12px rgba(25, 64, 123, 0.3),
+    -6px -6px 12px rgba(8, 220, 255, 0.1);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.neu-button-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.neu-button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    8px 8px 16px rgba(25, 64, 123, 0.4),
+    -8px -8px 16px rgba(8, 220, 255, 0.2);
+}
+
+.neu-button-primary:hover::before {
+  left: 100%;
+}
+
+.neu-button-primary:active {
+  transform: translateY(0);
+  box-shadow: 
+    4px 4px 8px rgba(25, 64, 123, 0.4) inset,
+    -4px -4px 8px rgba(8, 220, 255, 0.1) inset;
+}
+
+/* Inputs neumórficos */
+.neu-input {
+  background: var(--gris-claro);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 
+    4px 4px 8px rgba(163, 177, 198, 0.2) inset,
+    -4px -4px 8px rgba(255, 255, 255, 0.8) inset;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  color: var(--negro);
+  width: 100%;
+}
+
+.neu-input:focus {
+  outline: none;
+  box-shadow: 
+    4px 4px 8px rgba(163, 177, 198, 0.3) inset,
+    -4px -4px 8px rgba(255, 255, 255, 0.9) inset,
+    0 0 0 3px rgba(0, 117, 191, 0.1);
+}
+
+.neu-input::placeholder {
+  color: #94a3b8;
+}
+
+/* Tarjetas con efecto glass */
+.glass-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+}
+
+/* Sombras especiales */
+.shadow-neu {
+  box-shadow: 
+    8px 8px 16px rgba(163, 177, 198, 0.15),
+    -8px -8px 16px rgba(255, 255, 255, 0.7);
+}
+
+.shadow-neu-hover {
+  box-shadow: 
+    12px 12px 24px rgba(163, 177, 198, 0.2),
+    -12px -12px 24px rgba(255, 255, 255, 0.8);
+}
+
+.shadow-glass {
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* Estados de las homologaciones */
+.status-aprobada {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--verde-exito);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.status-pendiente {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--amarillo-pendiente);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+.status-rechazada {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--rojo-error);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+}
+
+/* Tarjetas de estadísticas */
+.stat-card {
+  background: var(--blanco);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 
+    10px 10px 20px rgba(163, 177, 198, 0.15),
+    -10px -10px 20px rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--azul-oscuro), var(--azul-medio), var(--azul-claro));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    15px 15px 30px rgba(163, 177, 198, 0.2),
+    -15px -15px 30px rgba(255, 255, 255, 0.8);
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/* Tabla neumórfica */
+.neu-table {
+  background: var(--blanco);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 
+    8px 8px 16px rgba(163, 177, 198, 0.15),
+    -8px -8px 16px rgba(255, 255, 255, 0.7);
+}
+
+.neu-table th {
+  background: var(--gris-claro);
+  color: var(--azul-oscuro);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 11px;
+  padding: 16px;
+  text-align: left;
+}
+
+.neu-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--gris-medio);
+  color: var(--negro);
+}
+
+.neu-table tr:hover {
+  background: rgba(8, 220, 255, 0.05);
+}
+
+/* Botón flotante */
+.floating-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--azul-medio) 0%, var(--azul-oscuro) 100%);
+  color: white;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    8px 8px 16px rgba(25, 64, 123, 0.3),
+    -8px -8px 16px rgba(8, 220, 255, 0.1),
+    0 4px 20px rgba(0, 117, 191, 0.4);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-button:hover {
+  transform: translateY(-4px) scale(1.1);
+  box-shadow: 
+    12px 12px 24px rgba(25, 64, 123, 0.4),
+    -12px -12px 24px rgba(8, 220, 255, 0.2),
+    0 8px 30px rgba(0, 117, 191, 0.5);
+}
+
+.floating-button:active {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* Animaciones personalizadas */
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-neu-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Utilidades adicionales */
+.backdrop-blur-neu {
+  backdrop-filter: blur(10px);
+}
+
+.border-neu {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.text-shadow-neu {
+  text-shadow: 2px 2px 4px rgba(163, 177, 198, 0.3);
 }
