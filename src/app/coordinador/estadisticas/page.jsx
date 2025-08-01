@@ -1,6 +1,6 @@
 'use client'
 
-import SidebarLayout from '../../../components/layouts/SidebarLayout'
+import SidebarLayout from '../../../layouts/SidebarLayout'
 import { useState, useEffect } from 'react'
 import { 
   BarChart3, 

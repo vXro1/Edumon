@@ -123,15 +123,15 @@ const Homepage = () => {
   };
 
   const handleLogin = () => {
-    router.push('/login');
+    router.push('auth/login');
   };
 
   const handleRegister = () => {
-    router.push('/registro');
+    router.push('auth/register');
   };
 
   const handleStartHomologation = () => {
-    router.push('/auth/registro');
+    router.push('/auth/register');
   };
 
   const toggleAccordion = (index) => {

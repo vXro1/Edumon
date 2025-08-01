@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { Eye, EyeOff, Home, Mail, Lock } from 'lucide-react';
+import { useAuth } from '../../../contexts/AuthContext'; 
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -15,13 +18,22 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [mounted, setMounted] = useState(false);
+  
+  // Hooks de Next.js y Auth Context
+  const { login, isAuthenticated } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    
+    // Si ya está autenticado, redirigir
+    if (isAuthenticated) {
+      router.push('/'); // El AuthProvider se encargará de la redirección correcta
+    }
+  }, [isAuthenticated, router]);
 
   const handleNavigation = (path) => {
-    console.log(`Navigating to: ${path}`);
+    router.push(path);
   };
 
   const handleInputChange = (e) => {
@@ -63,24 +75,29 @@ export default function LoginPage() {
     setMessage({ type: '', text: '' });
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Usar el login del AuthContext
+      await login(formData.email, formData.password, formData.remember);
+      
       setMessage({
         type: 'success',
         text: '¡Inicio de sesión exitoso! Redirigiendo...'
       });
 
-      setTimeout(() => {
-        console.log('Redirecting to coordinator dashboard...');
-      }, 2000);
+      // El AuthContext se encarga de la redirección automáticamente
     } catch (error) {
       setMessage({
         type: 'error',
-        text: 'Error al iniciar sesión. Inténtalo de nuevo.'
+        text: error.message || 'Error al iniciar sesión. Inténtalo de nuevo.'
       });
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Mostrar loading mientras monta el componente
+  if (!mounted) {
+    return <div>Cargando...</div>;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-gradient-to-br from-blue-100 via-indigo-50 to-blue-200">
@@ -123,7 +140,7 @@ export default function LoginPage() {
 
       {/* Botón Home neumórfico */}
       <button
-        onClick={() => handleNavigation('/src/page.jsx')}
+        onClick={() => handleNavigation('/')}
         className="fixed top-6 right-6 w-14 h-14 rounded-2xl flex items-center justify-center z-50 transition-all duration-300 hover:scale-105 group bg-blue-50"
         style={{
           boxShadow: `
@@ -167,7 +184,7 @@ export default function LoginPage() {
             }}
           >
             <img
-              src="img/quime.png"
+              src="/img/quime.png"
               alt="Logo Universidad Autónoma del Cauca"
               className="w-12 h-12 object-contain filter brightness-110"
             />
@@ -210,7 +227,7 @@ export default function LoginPage() {
           )}
 
           {/* Formulario */}
-          <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Campo de email */}
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-blue-700 mb-3">
@@ -225,7 +242,8 @@ export default function LoginPage() {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="correo@unicauca.edu.co"
-                  className={`w-full pl-12 pr-4 py-4 rounded-2xl text-sm font-medium transition-all duration-300 focus:outline-none bg-blue-50 ${
+                  disabled={isLoading}
+                  className={`w-full pl-12 pr-4 py-4 rounded-2xl text-sm font-medium transition-all duration-300 focus:outline-none bg-blue-50 disabled:opacity-70 ${
                     errors.email 
                       ? 'text-red-600' 
                       : 'text-blue-800 focus:text-blue-900'
@@ -256,7 +274,8 @@ export default function LoginPage() {
                   value={formData.password}
                   onChange={handleInputChange}
                   placeholder="••••••••"
-                  className={`w-full pl-12 pr-12 py-4 rounded-2xl text-sm font-medium transition-all duration-300 focus:outline-none bg-blue-50 ${
+                  disabled={isLoading}
+                  className={`w-full pl-12 pr-12 py-4 rounded-2xl text-sm font-medium transition-all duration-300 focus:outline-none bg-blue-50 disabled:opacity-70 ${
                     errors.password 
                       ? 'text-red-600' 
                       : 'text-blue-800 focus:text-blue-900'
@@ -270,7 +289,8 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-700 transition-colors duration-200"
+                  disabled={isLoading}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-700 transition-colors duration-200 disabled:opacity-50"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
@@ -288,9 +308,10 @@ export default function LoginPage() {
                   boxShadow: `
                     inset 4px 4px 8px rgba(59, 130, 246, 0.15),
                     inset -4px -4px 8px rgba(255, 255, 255, 0.8)
-                  `
+                  `,
+                  opacity: isLoading ? 0.7 : 1
                 }}
-                onClick={() => setFormData(prev => ({ ...prev, remember: !prev.remember }))}
+                onClick={() => !isLoading && setFormData(prev => ({ ...prev, remember: !prev.remember }))}
               >
                 <input
                   type="checkbox"
@@ -298,21 +319,28 @@ export default function LoginPage() {
                   name="remember"
                   checked={formData.remember}
                   onChange={handleInputChange}
+                  disabled={isLoading}
                   className="sr-only"
                 />
                 {formData.remember && (
                   <div className="absolute inset-1 bg-blue-500 rounded-sm" />
                 )}
               </div>
-              <label htmlFor="remember" className="text-sm font-medium text-blue-700 cursor-pointer select-none">
+              <label 
+                htmlFor="remember" 
+                className={`text-sm font-medium text-blue-700 cursor-pointer select-none ${
+                  isLoading ? 'opacity-70' : ''
+                }`}
+              >
                 Recordar mis datos
               </label>
             </div>
 
             {/* Botón de envío neumórfico */}
-            <div
-              onClick={handleSubmit}
-              className="w-full py-4 px-6 rounded-2xl font-bold text-white transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 cursor-pointer relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-center"
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full py-4 px-6 rounded-2xl font-bold text-white transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
               style={{
                 boxShadow: `
                   12px 12px 24px rgba(59, 130, 246, 0.3),
@@ -330,20 +358,20 @@ export default function LoginPage() {
               ) : (
                 'INGRESAR'
               )}
-            </div>
-          </div>
+            </button>
+          </form>
 
           {/* Enlaces de ayuda */}
           <div className="mt-8 text-center flex items-center justify-center gap-6 text-sm">
-            <button
-              onClick={() => handleNavigation('/registro')}
+            <Link
+              href="/auth/register"
               className="font-medium text-blue-600 hover:text-blue-700 transition-colors duration-200"
             >
               Regístrate Aquí
-            </button>
+            </Link>
             <span className="text-gray-300">|</span>
             <button
-              onClick={() => handleNavigation('/src/page.jsx')}
+              onClick={() => handleNavigation('/')}
               className="font-medium text-blue-600 hover:text-blue-700 transition-colors duration-200"
             >
               Contactar Soporte

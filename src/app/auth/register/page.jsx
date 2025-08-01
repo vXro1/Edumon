@@ -1,27 +1,31 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Eye, EyeOff, Home, Mail, Lock } from 'lucide-react';
+import { useState } from 'react';
+import { Eye, EyeOff, Home, Mail, Lock, User, IdCard, Hash } from 'lucide-react';
+import { useAuth } from '../../../contexts/AuthContext'; 
+import Swal from 'sweetalert2';
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
-    remember: false
+    tipo_identificacion: '',
+    numero_identificacion: ''
   });
 
-  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
+  const { login } = useAuth(); // Para usar el servicio de auth del contexto
+
   const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value
     }));
 
+    // Limpiar errores cuando el usuario empiece a escribir
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
@@ -31,16 +35,23 @@ export default function LoginPage() {
   const validateForm = () => {
     const newErrors = {};
 
+    // Validar email
     if (!formData.email) {
       newErrors.email = 'El correo electrónico es requerido';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'El formato del correo no es válido';
     }
 
-    if (!formData.password) {
-      newErrors.password = 'La contraseña es requerida';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+    // Validar tipo de identificación
+    if (!formData.tipo_identificacion) {
+      newErrors.tipo_identificacion = 'Debe seleccionar un tipo de documento';
+    }
+
+    // Validar número de identificación
+    if (!formData.numero_identificacion) {
+      newErrors.numero_identificacion = 'El número de identificación es requerido';
+    } else if (formData.numero_identificacion.length < 5 || !/^\d+$/.test(formData.numero_identificacion)) {
+      newErrors.numero_identificacion = 'El número de documento debe tener al menos 5 dígitos y solo puede contener números';
     }
 
     setErrors(newErrors);
@@ -55,30 +66,65 @@ export default function LoginPage() {
     setMessage({ type: '', text: '' });
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setMessage({
-        type: 'success',
-        text: '¡Inicio de sesión exitoso! Redirigiendo...'
+      // Crear instancia del servicio de auth (similar al AuthService de tu código)
+      const urlBase = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api';
+      
+      const response = await fetch(`${urlBase}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
 
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || Object.values(data).join(', ') || 'Error en el registro');
+      }
+
+      // Mostrar mensaje de éxito con SweetAlert2
+      await Swal.fire({
+        title: 'Registro Exitoso',
+        text: data.message || 'Usuario registrado correctamente. Revisa tu correo para obtener tus credenciales.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#3b82f6'
+      });
+
+      // Limpiar formulario
+      setFormData({
+        email: '',
+        tipo_identificacion: '',
+        numero_identificacion: ''
+      });
+
+      // Redirigir a login después de un retraso
       setTimeout(() => {
-        console.log('Redirecting to coordinator dashboard...');
-      }, 2000);
+        window.location.href = '/auth/login'; // O usar router.push('/auth/login')
+      }, 3000);
 
     } catch (error) {
       setMessage({
         type: 'error',
-        text: 'Error al iniciar sesión. Inténtalo de nuevo.'
+        text: error.message || 'Error en el registro. Inténtalo de nuevo.'
       });
     } finally {
       setIsLoading(false);
     }
   };
 
+  const tiposIdentificacion = [
+    { value: '', label: 'Seleccione un tipo de documento', disabled: true },
+    { value: 'Cédula de Ciudadanía', label: 'Cédula de Ciudadanía' },
+    { value: 'Cédula de Extranjería', label: 'Cédula de Extranjería' },
+    { value: 'Tarjeta de Identidad', label: 'Tarjeta de Identidad' }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Efectos de fondo azules neumórficos */}
+      {/* Efectos de fondo azules neumórficos (mantén los mismos del login) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
           className="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-30"
@@ -103,7 +149,7 @@ export default function LoginPage() {
         ></div>
       </div>
 
-      {/* Partículas flotantes con glow azul */}
+      {/* Partículas flotantes con glow azul (mantén las mismas del login) */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(25)].map((_, i) => (
           <div
@@ -123,9 +169,9 @@ export default function LoginPage() {
         ))}
       </div>
 
-      {/* Botón Home con sombras azules */}
+      {/* Botón Home */}
       <button
-        onClick={() => console.log('Navigate to home')}
+        onClick={() => window.location.href = '/'}
         className="fixed top-5 right-5 w-14 h-14 rounded-2xl flex items-center justify-center z-50 text-blue-700 transition-all duration-300"
         style={{
           background: 'linear-gradient(145deg, #f8fafc, #e2e8f0)',
@@ -154,9 +200,9 @@ export default function LoginPage() {
           }}
         >
 
-          {/* Header con imagen de quime */}
+          {/* Header con imagen */}
           <div className="flex w-full rounded-t-3xl overflow-hidden">
-            {/* Columna Izquierda: Imagen con gradiente azul */}
+            {/* Columna Izquierda: Imagen */}
             <div 
               className="w-1/2 flex items-center justify-center p-8 relative"
               style={{
@@ -174,7 +220,7 @@ export default function LoginPage() {
                   }}
                 >
                   <img
-                    src="img/quime.png"
+                    src="/img/quime.png" // Ajusta la ruta según tu estructura de Next.js
                     alt="Quimerito"
                     className="w-28 h-28 object-contain rounded-full"
                     style={{
@@ -185,7 +231,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Columna Derecha: Título con sombras azules */}
+            {/* Columna Derecha: Título */}
             <div 
               className="w-1/2 flex items-center justify-center p-8"
               style={{
@@ -193,12 +239,12 @@ export default function LoginPage() {
               }}
             >
               <h1 
-                className="text-3xl font-bold text-blue-900"
+                className="text-3xl font-bold text-blue-900 text-center"
                 style={{
                   textShadow: '3px 3px 6px rgba(59, 130, 246, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.8), 0 0 10px rgba(59, 130, 246, 0.2)',
                 }}
               >
-                INICIAR SESIÓN
+                REGISTRO
               </h1>
             </div>
           </div>
@@ -206,7 +252,7 @@ export default function LoginPage() {
           {/* Contenedor del formulario */}
           <div className="p-8">
 
-            {/* Mensajes de estado con sombras azules */}
+            {/* Mensajes de estado */}
             {message.text && (
               <div 
                 className={`p-4 rounded-xl mb-6 text-sm font-medium ${
@@ -225,9 +271,9 @@ export default function LoginPage() {
               </div>
             )}
 
-            <div className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
 
-              {/* Campo de email con sombras azules */}
+              {/* Campo de email */}
               <div className="space-y-3">
                 <label 
                   htmlFor="email" 
@@ -279,38 +325,36 @@ export default function LoginPage() {
                 )}
               </div>
 
-              {/* Campo de contraseña con sombras azules */}
+              {/* Campo de tipo de identificación */}
               <div className="space-y-3">
                 <label 
-                  htmlFor="password" 
+                  htmlFor="tipo_identificacion" 
                   className="block text-sm font-semibold text-gray-700"
                   style={{
                     textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 5px rgba(59, 130, 246, 0.1)',
                   }}
                 >
-                  Contraseña
+                  Tipo de Identificación
                 </label>
                 <div className="relative">
-                  <Lock 
+                  <IdCard 
                     className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600" 
                     size={20}
                     style={{
                       filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.4))',
                     }}
                   />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
-                    name="password"
-                    value={formData.password}
+                  <select
+                    id="tipo_identificacion"
+                    name="tipo_identificacion"
+                    value={formData.tipo_identificacion}
                     onChange={handleInputChange}
-                    placeholder="Ingrese su contraseña"
-                    className={`w-full pl-12 pr-12 py-4 rounded-xl text-sm font-medium text-gray-700 placeholder-gray-500 border-none outline-none transition-all duration-300 ${
-                      errors.password ? 'text-red-600' : ''
+                    className={`w-full pl-12 pr-4 py-4 rounded-xl text-sm font-medium text-gray-700 border-none outline-none transition-all duration-300 ${
+                      errors.tipo_identificacion ? 'text-red-600' : ''
                     }`}
                     style={{
                       background: 'linear-gradient(145deg, #f8fafc, #f1f5f9)',
-                      boxShadow: errors.password 
+                      boxShadow: errors.tipo_identificacion 
                         ? 'inset 8px 8px 16px rgba(239, 68, 68, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 10px rgba(239, 68, 68, 0.2)'
                         : 'inset 8px 8px 16px rgba(59, 130, 246, 0.08), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 5px rgba(59, 130, 246, 0.1)',
                     }}
@@ -319,85 +363,86 @@ export default function LoginPage() {
                       e.target.style.background = 'linear-gradient(145deg, #eff6ff, #dbeafe)';
                     }}
                     onBlur={(e) => {
-                      e.target.style.boxShadow = errors.password 
+                      e.target.style.boxShadow = errors.tipo_identificacion 
+                        ? 'inset 8px 8px 16px rgba(239, 68, 68, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 10px rgba(239, 68, 68, 0.2)'
+                        : 'inset 8px 8px 16px rgba(59, 130, 246, 0.08), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 5px rgba(59, 130, 246, 0.1)';
+                      e.target.style.background = 'linear-gradient(145deg, #f8fafc, #f1f5f9)';
+                    }}
+                  >
+                    {tiposIdentificacion.map((tipo) => (
+                      <option 
+                        key={tipo.value} 
+                        value={tipo.value} 
+                        disabled={tipo.disabled}
+                      >
+                        {tipo.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {errors.tipo_identificacion && (
+                  <p className="text-red-500 text-xs mt-2 font-semibold ml-1">{errors.tipo_identificacion}</p>
+                )}
+              </div>
+
+              {/* Campo de número de identificación */}
+              <div className="space-y-3">
+                <label 
+                  htmlFor="numero_identificacion" 
+                  className="block text-sm font-semibold text-gray-700"
+                  style={{
+                    textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 5px rgba(59, 130, 246, 0.1)',
+                  }}
+                >
+                  Número de Identificación
+                </label>
+                <div className="relative">
+                  <Hash 
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600" 
+                    size={20}
+                    style={{
+                      filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.4))',
+                    }}
+                  />
+                  <input
+                    type="text"
+                    id="numero_identificacion"
+                    name="numero_identificacion"
+                    value={formData.numero_identificacion}
+                    onChange={handleInputChange}
+                    placeholder="Ingrese su número de documento"
+                    pattern="[0-9]{5,}"
+                    title="Solo números, mínimo 5 dígitos"
+                    inputMode="numeric"
+                    className={`w-full pl-12 pr-4 py-4 rounded-xl text-sm font-medium text-gray-700 placeholder-gray-500 border-none outline-none transition-all duration-300 ${
+                      errors.numero_identificacion ? 'text-red-600' : ''
+                    }`}
+                    style={{
+                      background: 'linear-gradient(145deg, #f8fafc, #f1f5f9)',
+                      boxShadow: errors.numero_identificacion 
+                        ? 'inset 8px 8px 16px rgba(239, 68, 68, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 10px rgba(239, 68, 68, 0.2)'
+                        : 'inset 8px 8px 16px rgba(59, 130, 246, 0.08), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 5px rgba(59, 130, 246, 0.1)',
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.boxShadow = 'inset 10px 10px 20px rgba(59, 130, 246, 0.15), inset -10px -10px 20px rgba(255, 255, 255, 0.9), 0 0 20px rgba(59, 130, 246, 0.3)';
+                      e.target.style.background = 'linear-gradient(145deg, #eff6ff, #dbeafe)';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.boxShadow = errors.numero_identificacion 
                         ? 'inset 8px 8px 16px rgba(239, 68, 68, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 10px rgba(239, 68, 68, 0.2)'
                         : 'inset 8px 8px 16px rgba(59, 130, 246, 0.08), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 5px rgba(59, 130, 246, 0.1)';
                       e.target.style.background = 'linear-gradient(145deg, #f8fafc, #f1f5f9)';
                     }}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-600 hover:text-blue-700 transition-all duration-200"
-                    style={{
-                      filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.4))',
-                    }}
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
                 </div>
-                {errors.password && (
-                  <p className="text-red-500 text-xs mt-2 font-semibold ml-1">{errors.password}</p>
+                {errors.numero_identificacion && (
+                  <p className="text-red-500 text-xs mt-2 font-semibold ml-1">{errors.numero_identificacion}</p>
                 )}
               </div>
 
-              {/* Checkbox neumórfico con azules */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className="relative">
-                    <input
-                      type="checkbox"
-                      id="remember"
-                      name="remember"
-                      checked={formData.remember}
-                      onChange={handleInputChange}
-                      className="w-5 h-5 opacity-0 absolute"
-                    />
-                    <div 
-                      className={`w-5 h-5 rounded-lg cursor-pointer transition-all duration-300`}
-                      style={{
-                        background: formData.remember 
-                          ? 'linear-gradient(145deg, #dbeafe, #bfdbfe)'
-                          : 'linear-gradient(145deg, #f8fafc, #f1f5f9)',
-                        boxShadow: formData.remember 
-                          ? 'inset 4px 4px 8px rgba(59, 130, 246, 0.2), inset -4px -4px 8px rgba(255, 255, 255, 0.9), 0 0 10px rgba(59, 130, 246, 0.3)'
-                          : '4px 4px 8px rgba(59, 130, 246, 0.1), -4px -4px 8px rgba(255, 255, 255, 0.9), 0 0 5px rgba(59, 130, 246, 0.1)',
-                      }}
-                      onClick={() => setFormData(prev => ({ ...prev, remember: !prev.remember }))}
-                    >
-                      {formData.remember && (
-                        <div className="flex items-center justify-center h-full">
-                          <div 
-                            className="w-2 h-2 rounded-full"
-                            style={{
-                              background: 'radial-gradient(circle, #3b82f6, #1d4ed8)',
-                              boxShadow: '0 0 6px rgba(59, 130, 246, 0.6)',
-                            }}
-                          ></div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <label htmlFor="remember" className="ml-3 text-sm font-medium text-gray-700 cursor-pointer select-none">
-                    Recordar mis datos
-                  </label>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => console.log('Forgot password')}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
-                  style={{
-                    textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 5px rgba(59, 130, 246, 0.2)',
-                  }}
-                >
-                  ¿Olvidaste tu contraseña?
-                </button>
-              </div>
-
-              {/* Botón de envío con sombras azules espectaculares */}
+              {/* Botón de envío */}
               <button
                 type="submit"
-                onClick={handleSubmit}
                 disabled={isLoading}
                 className="w-full py-4 px-6 rounded-xl font-bold text-lg tracking-wide relative overflow-hidden text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
@@ -420,16 +465,6 @@ export default function LoginPage() {
                     e.target.style.boxShadow = '12px 12px 24px rgba(59, 130, 246, 0.4), -12px -12px 24px rgba(255, 255, 255, 0.6), 0 0 30px rgba(59, 130, 246, 0.3)';
                   }
                 }}
-                onMouseDown={(e) => {
-                  if (!isLoading) {
-                    e.target.style.boxShadow = 'inset 8px 8px 16px rgba(29, 78, 216, 0.3), inset -8px -8px 16px rgba(96, 165, 250, 0.1), 0 0 25px rgba(59, 130, 246, 0.4)';
-                  }
-                }}
-                onMouseUp={(e) => {
-                  if (!isLoading) {
-                    e.target.style.boxShadow = '12px 12px 24px rgba(59, 130, 246, 0.4), -12px -12px 24px rgba(255, 255, 255, 0.6), 0 0 30px rgba(59, 130, 246, 0.3)';
-                  }
-                }}
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center space-x-3">
@@ -439,46 +474,27 @@ export default function LoginPage() {
                         filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))',
                       }}
                     ></div>
-                    <span style={{ textShadow: '0 0 10px rgba(255, 255, 255, 0.5)' }}>Ingresando...</span>
+                    <span style={{ textShadow: '0 0 10px rgba(255, 255, 255, 0.5)' }}>Registrando...</span>
                   </div>
                 ) : (
-                  <span style={{ textShadow: '0 0 10px rgba(255, 255, 255, 0.3), 2px 2px 4px rgba(0, 0, 0, 0.3)' }}>INGRESAR</span>
+                  <div className="flex items-center justify-center space-x-2">
+                    <User size={20} />
+                    <span style={{ textShadow: '0 0 10px rgba(255, 255, 255, 0.3), 2px 2px 4px rgba(0, 0, 0, 0.3)' }}>REGISTRARSE</span>
+                  </div>
                 )}
               </button>
-            </div>
+            </form>
 
-            {/* Enlaces de ayuda con sombras azules */}
+            {/* Enlaces de ayuda */}
             <div className="mt-8 text-center space-x-6 text-sm">
               <button
-                onClick={() => console.log('Navigate to register')}
+                onClick={() => window.location.href = '/auth/login'}
                 className="font-medium text-blue-600 hover:text-blue-700 transition-all duration-200"
                 style={{
                   textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 8px rgba(59, 130, 246, 0.3)',
                 }}
-                onMouseEnter={(e) => {
-                  e.target.style.textShadow = '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 12px rgba(59, 130, 246, 0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.textShadow = '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 8px rgba(59, 130, 246, 0.3)';
-                }}
               >
-                Regístrate Aquí
-              </button>
-              <span className="text-gray-400 font-light">|</span>
-              <button
-                onClick={() => console.log('Navigate to support')}
-                className="font-medium text-blue-600 hover:text-blue-700 transition-all duration-200"
-                style={{
-                  textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 8px rgba(59, 130, 246, 0.3)',
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.textShadow = '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 12px rgba(59, 130, 246, 0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.textShadow = '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 8px rgba(59, 130, 246, 0.3)';
-                }}
-              >
-                Contactar Soporte
+                ¿Ya tienes cuenta? Inicia sesión aquí
               </button>
             </div>
           </div>
