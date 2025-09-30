@@ -100,290 +100,407 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden bg-gradient-to-br from-blue-100 via-indigo-50 to-blue-200">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center p-4 relative overflow-hidden">
       
-      {/* Elementos decorativos sutiles */}
+      {/* Efectos de fondo azules neumórficos */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Círculos flotantes minimalistas */}
-        {[...Array(8)].map((_, i) => (
+        <div 
+          className="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-30"
+          style={{
+            background: 'linear-gradient(135deg, #dbeafe, #bfdbfe)',
+            boxShadow: '0 0 80px rgba(59, 130, 246, 0.3), inset 20px 20px 40px rgba(147, 197, 253, 0.2)',
+          }}
+        ></div>
+        <div 
+          className="absolute top-1/4 -right-32 w-96 h-96 rounded-full opacity-25"
+          style={{
+            background: 'linear-gradient(135deg, #bfdbfe, #93c5fd)',
+            boxShadow: '0 0 100px rgba(59, 130, 246, 0.4), inset 30px 30px 60px rgba(147, 197, 253, 0.3)',
+          }}
+        ></div>
+        <div 
+          className="absolute -bottom-32 left-1/3 w-72 h-72 rounded-full opacity-20"
+          style={{
+            background: 'linear-gradient(135deg, #93c5fd, #60a5fa)',
+            boxShadow: '0 0 60px rgba(59, 130, 246, 0.5), inset 25px 25px 50px rgba(147, 197, 253, 0.4)',
+          }}
+        ></div>
+      </div>
+
+      {/* Partículas flotantes con glow azul */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(25)].map((_, i) => (
           <div
-            key={`circle-${i}`}
-            className="absolute rounded-full opacity-10 animate-pulse"
+            key={`particle-${i}`}
+            className="absolute rounded-full opacity-70"
             style={{
-              width: `${100 + Math.random() * 200}px`,
-              height: `${100 + Math.random() * 200}px`,
+              width: `${2 + Math.random() * 3}px`,
+              height: `${2 + Math.random() * 3}px`,
+              background: `radial-gradient(circle, #60a5fa, #3b82f6)`,
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-              background: `radial-gradient(circle, ${
-                i % 2 === 0 ? '#3b82f6' : '#6366f1'
-              }20 0%, transparent 70%)`,
-              animationDelay: `${Math.random() * 4}s`,
-              animationDuration: `${6 + Math.random() * 4}s`
+              boxShadow: `0 0 ${8 + Math.random() * 12}px rgba(59, 130, 246, 0.8), 0 0 ${4 + Math.random() * 6}px rgba(147, 197, 253, 0.6)`,
+              animation: `float ${6 + Math.random() * 8}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 5}s`,
             }}
           />
         ))}
-
-        {/* Líneas sutiles */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-5">
-          <div 
-            className="w-full h-full"
-            style={{
-              backgroundImage: `
-                linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)
-              `,
-              backgroundSize: '60px 60px'
-            }}
-          />
-        </div>
       </div>
 
-      {/* Botón Home neumórfico */}
+      {/* Botón Home */}
       <button
         onClick={() => handleNavigation('/')}
-        className="fixed top-6 right-6 w-14 h-14 rounded-2xl flex items-center justify-center z-50 transition-all duration-300 hover:scale-105 group bg-blue-50"
+        className="fixed top-5 right-5 w-14 h-14 rounded-2xl flex items-center justify-center z-50 text-blue-700 transition-all duration-300"
         style={{
-          boxShadow: `
-            8px 8px 16px rgba(59, 130, 246, 0.15),
-            -8px -8px 16px rgba(255, 255, 255, 0.9),
-            inset 2px 2px 4px rgba(255, 255, 255, 0.8),
-            inset -2px -2px 4px rgba(59, 130, 246, 0.1)
-          `
+          background: 'linear-gradient(145deg, #f8fafc, #e2e8f0)',
+          boxShadow: '12px 12px 24px rgba(59, 130, 246, 0.15), -12px -12px 24px rgba(255, 255, 255, 0.9), inset 0 0 0 rgba(59, 130, 246, 0.1)',
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.boxShadow = 'inset 6px 6px 12px rgba(59, 130, 246, 0.1), inset -6px -6px 12px rgba(255, 255, 255, 0.9), 0 0 20px rgba(59, 130, 246, 0.3)';
+          e.target.style.transform = 'scale(1.05)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.boxShadow = '12px 12px 24px rgba(59, 130, 246, 0.15), -12px -12px 24px rgba(255, 255, 255, 0.9)';
+          e.target.style.transform = 'scale(1)';
         }}
       >
-        <Home size={20} className="text-blue-600 group-hover:text-blue-700 transition-colors duration-300" />
+        <Home size={22} strokeWidth={2.5} />
       </button>
 
-      {/* Container principal neumórfico */}
-      <div 
-        className={`w-full max-w-md rounded-3xl overflow-hidden relative transition-all duration-1000 bg-blue-50 ${
-          mounted ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-8 opacity-0 scale-95'
-        }`}
-        style={{
-          boxShadow: `
-            25px 25px 50px rgba(59, 130, 246, 0.2),
-            -25px -25px 50px rgba(255, 255, 255, 0.9),
-            inset 3px 3px 6px rgba(255, 255, 255, 0.8),
-            inset -3px -3px 6px rgba(59, 130, 246, 0.1)
-          `
-        }}
-      >
-        
-        {/* Header minimalista */}
-        <div className="p-8 text-center relative bg-gradient-to-b from-blue-100 to-blue-50">
-          {/* Logo container neumórfico */}
-          <div 
-            className="mx-auto mb-6 w-20 h-20 rounded-2xl flex items-center justify-center relative bg-blue-50"
-            style={{
-              boxShadow: `
-                12px 12px 24px rgba(59, 130, 246, 0.2),
-                -12px -12px 24px rgba(255, 255, 255, 0.9),
-                inset 4px 4px 8px rgba(255, 255, 255, 0.8),
-                inset -4px -4px 8px rgba(59, 130, 246, 0.15)
-              `
-            }}
-          >
-            <img
-              src="/img/quime.png"
-              alt="Logo Universidad Autónoma del Cauca"
-              className="w-12 h-12 object-contain filter brightness-110"
-            />
-          </div>
-          
-          <h1 className="text-blue-700 text-sm font-semibold tracking-wide mb-2">
-            UNIVERSIDAD AUTÓNOMA DEL CAUCA
-          </h1>
-          <div className="w-16 h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 mx-auto rounded-full shadow-lg" />
-        </div>
+      {/* Container principal del formulario */}
+      <div className="w-full max-w-md">
+        <div 
+          className="rounded-3xl overflow-hidden backdrop-blur-sm"
+          style={{
+            background: 'linear-gradient(145deg, rgba(248, 250, 252, 0.95), rgba(241, 245, 249, 0.90))',
+            boxShadow: '25px 25px 50px rgba(59, 130, 246, 0.15), -25px -25px 50px rgba(255, 255, 255, 0.9), 0 0 40px rgba(59, 130, 246, 0.1)',
+            border: '1px solid rgba(147, 197, 253, 0.2)',
+          }}
+        >
 
-        {/* Contenido del formulario */}
-        <div className="p-8 bg-blue-50">
-          {/* Título */}
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-blue-800 mb-2">
-              Iniciar Sesión
-            </h2>
-            <p className="text-blue-600 text-sm font-medium">
-              Sistema de Homologaciones
-            </p>
-          </div>
-
-          {/* Mensaje de estado */}
-          {message.text && (
+          {/* Header con imagen */}
+          <div className="flex w-full rounded-t-3xl overflow-hidden">
+            {/* Columna Izquierda: Imagen */}
             <div 
-              className={`p-4 rounded-2xl mb-6 text-sm font-medium transition-all duration-300 ${
-                message.type === 'error' 
-                  ? 'bg-red-100 text-red-700' 
-                  : 'bg-green-100 text-green-700'
-              }`}
+              className="w-1/2 flex items-center justify-center p-8 relative"
               style={{
-                boxShadow: message.type === 'error' 
-                  ? `inset 6px 6px 12px rgba(239, 68, 68, 0.1), inset -6px -6px 12px rgba(255, 255, 255, 0.8)`
-                  : `inset 6px 6px 12px rgba(34, 197, 94, 0.1), inset -6px -6px 12px rgba(255, 255, 255, 0.8)`
+                background: 'linear-gradient(135deg, #1e40af, #3b82f6, #06b6d4)',
+                boxShadow: 'inset 0 0 30px rgba(0, 0, 0, 0.2)',
               }}
             >
-              {message.text}
-            </div>
-          )}
-
-          {/* Formulario */}
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Campo de email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-blue-700 mb-3">
-                Correo Electrónico
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-500" size={18} />
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="correo@unicauca.edu.co"
-                  disabled={isLoading}
-                  className={`w-full pl-12 pr-4 py-4 rounded-2xl text-sm font-medium transition-all duration-300 focus:outline-none bg-blue-50 disabled:opacity-70 ${
-                    errors.email 
-                      ? 'text-red-600' 
-                      : 'text-blue-800 focus:text-blue-900'
-                  }`}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-cyan-600/30"></div>
+              <div className="relative z-10">
+                <div 
+                  className="w-32 h-32 rounded-full p-2 backdrop-blur-sm flex items-center justify-center"
                   style={{
-                    boxShadow: errors.email 
-                      ? `inset 8px 8px 16px rgba(239, 68, 68, 0.15), inset -8px -8px 16px rgba(255, 255, 255, 0.8)`
-                      : `inset 8px 8px 16px rgba(59, 130, 246, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.8)`
+                    background: 'rgba(255, 255, 255, 0.15)',
+                    boxShadow: '0 0 30px rgba(255, 255, 255, 0.3), inset 4px 4px 8px rgba(255, 255, 255, 0.2), inset -4px -4px 8px rgba(0, 0, 0, 0.1)',
                   }}
-                />
-              </div>
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-2 ml-1 animate-pulse">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Campo de contraseña */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-blue-700 mb-3">
-                Contraseña
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-500" size={18} />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="••••••••"
-                  disabled={isLoading}
-                  className={`w-full pl-12 pr-12 py-4 rounded-2xl text-sm font-medium transition-all duration-300 focus:outline-none bg-blue-50 disabled:opacity-70 ${
-                    errors.password 
-                      ? 'text-red-600' 
-                      : 'text-blue-800 focus:text-blue-900'
-                  }`}
-                  style={{
-                    boxShadow: errors.password 
-                      ? `inset 8px 8px 16px rgba(239, 68, 68, 0.15), inset -8px -8px 16px rgba(255, 255, 255, 0.8)`
-                      : `inset 8px 8px 16px rgba(59, 130, 246, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.8)`
-                  }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  disabled={isLoading}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-500 hover:text-blue-700 transition-colors duration-200 disabled:opacity-50"
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
+                  <img
+                    src="/img/quime.png"
+                    alt="Quimerito"
+                    className="w-28 h-28 object-contain rounded-full"
+                    style={{
+                      filter: 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))',
+                    }}
+                  />
+                </div>
               </div>
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-2 ml-1 animate-pulse">{errors.password}</p>
-              )}
             </div>
 
-            {/* Checkbox neumórfico */}
-            <div className="flex items-center">
-              <div 
-                className="relative w-5 h-5 mr-3 rounded cursor-pointer bg-blue-50"
+            {/* Columna Derecha: Título */}
+            <div 
+              className="w-1/2 flex items-center justify-center p-8"
+              style={{
+                background: 'linear-gradient(145deg, #f8fafc, #f1f5f9)',
+              }}
+            >
+              <h1 
+                className="text-3xl font-bold text-blue-900 text-center"
                 style={{
-                  boxShadow: `
-                    inset 4px 4px 8px rgba(59, 130, 246, 0.15),
-                    inset -4px -4px 8px rgba(255, 255, 255, 0.8)
-                  `,
-                  opacity: isLoading ? 0.7 : 1
+                  textShadow: '3px 3px 6px rgba(59, 130, 246, 0.3), -2px -2px 4px rgba(255, 255, 255, 0.8), 0 0 10px rgba(59, 130, 246, 0.2)',
                 }}
-                onClick={() => !isLoading && setFormData(prev => ({ ...prev, remember: !prev.remember }))}
               >
-                <input
-                  type="checkbox"
-                  id="remember"
-                  name="remember"
-                  checked={formData.remember}
-                  onChange={handleInputChange}
-                  disabled={isLoading}
-                  className="sr-only"
-                />
-                {formData.remember && (
-                  <div className="absolute inset-1 bg-blue-500 rounded-sm" />
+                LOGIN
+              </h1>
+            </div>
+          </div>
+
+          {/* Contenedor del formulario */}
+          <div className="p-8">
+
+            {/* Mensajes de estado */}
+            {message.text && (
+              <div 
+                className={`p-4 rounded-xl mb-6 text-sm font-medium ${
+                  message.type === 'error' ? 'text-red-700' : 'text-green-700'
+                }`}
+                style={{
+                  background: message.type === 'error' 
+                    ? 'linear-gradient(145deg, #fef2f2, #fee2e2)'
+                    : 'linear-gradient(145deg, #f0fdf4, #dcfce7)',
+                  boxShadow: message.type === 'error' 
+                    ? 'inset 6px 6px 12px rgba(239, 68, 68, 0.1), inset -6px -6px 12px rgba(255, 255, 255, 0.9), 0 0 15px rgba(239, 68, 68, 0.1)'
+                    : 'inset 6px 6px 12px rgba(34, 197, 94, 0.1), inset -6px -6px 12px rgba(255, 255, 255, 0.9), 0 0 15px rgba(34, 197, 94, 0.1)',
+                }}
+              >
+                {message.text}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+
+              {/* Campo de email */}
+              <div className="space-y-3">
+                <label 
+                  htmlFor="email" 
+                  className="block text-sm font-semibold text-gray-700"
+                  style={{
+                    textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 5px rgba(59, 130, 246, 0.1)',
+                  }}
+                >
+                  Correo Electrónico
+                </label>
+                <div className="relative">
+                  <Mail 
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600" 
+                    size={20}
+                    style={{
+                      filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.4))',
+                    }}
+                  />
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="correo@unicauca.edu.co"
+                    disabled={isLoading}
+                    className={`w-full pl-12 pr-4 py-4 rounded-xl text-sm font-medium text-gray-700 placeholder-gray-500 border-none outline-none transition-all duration-300 disabled:opacity-70 ${
+                      errors.email ? 'text-red-600' : ''
+                    }`}
+                    style={{
+                      background: 'linear-gradient(145deg, #f8fafc, #f1f5f9)',
+                      boxShadow: errors.email 
+                        ? 'inset 8px 8px 16px rgba(239, 68, 68, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 10px rgba(239, 68, 68, 0.2)'
+                        : 'inset 8px 8px 16px rgba(59, 130, 246, 0.08), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 5px rgba(59, 130, 246, 0.1)',
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.boxShadow = 'inset 10px 10px 20px rgba(59, 130, 246, 0.15), inset -10px -10px 20px rgba(255, 255, 255, 0.9), 0 0 20px rgba(59, 130, 246, 0.3)';
+                      e.target.style.background = 'linear-gradient(145deg, #eff6ff, #dbeafe)';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.boxShadow = errors.email 
+                        ? 'inset 8px 8px 16px rgba(239, 68, 68, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 10px rgba(239, 68, 68, 0.2)'
+                        : 'inset 8px 8px 16px rgba(59, 130, 246, 0.08), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 5px rgba(59, 130, 246, 0.1)';
+                      e.target.style.background = 'linear-gradient(145deg, #f8fafc, #f1f5f9)';
+                    }}
+                  />
+                </div>
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-2 font-semibold ml-1">{errors.email}</p>
                 )}
               </div>
-              <label 
-                htmlFor="remember" 
-                className={`text-sm font-medium text-blue-700 cursor-pointer select-none ${
-                  isLoading ? 'opacity-70' : ''
-                }`}
-              >
-                Recordar mis datos
-              </label>
-            </div>
 
-            {/* Botón de envío neumórfico */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-4 px-6 rounded-2xl font-bold text-white transition-all duration-300 transform hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100 relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
-              style={{
-                boxShadow: `
-                  12px 12px 24px rgba(59, 130, 246, 0.3),
-                  -4px -4px 12px rgba(255, 255, 255, 0.2),
-                  inset 2px 2px 4px rgba(255, 255, 255, 0.2),
-                  inset -2px -2px 4px rgba(59, 130, 246, 0.2)
-                `
-              }}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Ingresando...</span>
+              {/* Campo de contraseña */}
+              <div className="space-y-3">
+                <label 
+                  htmlFor="password" 
+                  className="block text-sm font-semibold text-gray-700"
+                  style={{
+                    textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 5px rgba(59, 130, 246, 0.1)',
+                  }}
+                >
+                  Contraseña
+                </label>
+                <div className="relative">
+                  <Lock 
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-600" 
+                    size={20}
+                    style={{
+                      filter: 'drop-shadow(0 0 4px rgba(59, 130, 246, 0.4))',
+                    }}
+                  />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="••••••••"
+                    disabled={isLoading}
+                    className={`w-full pl-12 pr-12 py-4 rounded-xl text-sm font-medium text-gray-700 placeholder-gray-500 border-none outline-none transition-all duration-300 disabled:opacity-70 ${
+                      errors.password ? 'text-red-600' : ''
+                    }`}
+                    style={{
+                      background: 'linear-gradient(145deg, #f8fafc, #f1f5f9)',
+                      boxShadow: errors.password 
+                        ? 'inset 8px 8px 16px rgba(239, 68, 68, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 10px rgba(239, 68, 68, 0.2)'
+                        : 'inset 8px 8px 16px rgba(59, 130, 246, 0.08), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 5px rgba(59, 130, 246, 0.1)',
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.boxShadow = 'inset 10px 10px 20px rgba(59, 130, 246, 0.15), inset -10px -10px 20px rgba(255, 255, 255, 0.9), 0 0 20px rgba(59, 130, 246, 0.3)';
+                      e.target.style.background = 'linear-gradient(145deg, #eff6ff, #dbeafe)';
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.boxShadow = errors.password 
+                        ? 'inset 8px 8px 16px rgba(239, 68, 68, 0.1), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 10px rgba(239, 68, 68, 0.2)'
+                        : 'inset 8px 8px 16px rgba(59, 130, 246, 0.08), inset -8px -8px 16px rgba(255, 255, 255, 0.9), 0 0 5px rgba(59, 130, 246, 0.1)';
+                      e.target.style.background = 'linear-gradient(145deg, #f8fafc, #f1f5f9)';
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    disabled={isLoading}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-blue-600 hover:text-blue-700 transition-colors duration-200 disabled:opacity-50"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
-              ) : (
-                'INGRESAR'
-              )}
-            </button>
-          </form>
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-2 font-semibold ml-1">{errors.password}</p>
+                )}
+              </div>
 
-          {/* Enlaces de ayuda */}
-          <div className="mt-8 text-center flex items-center justify-center gap-6 text-sm">
-            <Link
-              href="/auth/register"
-              className="font-medium text-blue-600 hover:text-blue-700 transition-colors duration-200"
-            >
-              Regístrate Aquí
-            </Link>
-            <span className="text-gray-300">|</span>
-            <button
-              onClick={() => handleNavigation('/')}
-              className="font-medium text-blue-600 hover:text-blue-700 transition-colors duration-200"
-            >
-              Contactar Soporte
-            </button>
+              {/* Checkbox neumórfico */}
+              <div className="flex items-center">
+                <div 
+                  className="relative w-5 h-5 mr-3 rounded cursor-pointer"
+                  style={{
+                    background: 'linear-gradient(145deg, #f8fafc, #f1f5f9)',
+                    boxShadow: 'inset 4px 4px 8px rgba(59, 130, 246, 0.15), inset -4px -4px 8px rgba(255, 255, 255, 0.8)',
+                    opacity: isLoading ? 0.7 : 1
+                  }}
+                  onClick={() => !isLoading && setFormData(prev => ({ ...prev, remember: !prev.remember }))}
+                >
+                  <input
+                    type="checkbox"
+                    id="remember"
+                    name="remember"
+                    checked={formData.remember}
+                    onChange={handleInputChange}
+                    disabled={isLoading}
+                    className="sr-only"
+                  />
+                  {formData.remember && (
+                    <div className="absolute inset-1 bg-blue-500 rounded-sm" />
+                  )}
+                </div>
+                <label 
+                  htmlFor="remember" 
+                  className={`text-sm font-medium text-gray-700 cursor-pointer select-none ${
+                    isLoading ? 'opacity-70' : ''
+                  }`}
+                  style={{
+                    textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 5px rgba(59, 130, 246, 0.1)',
+                  }}
+                >
+                  Recordar mis datos
+                </label>
+              </div>
+
+              {/* Botón de envío */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-4 px-6 rounded-xl font-bold text-lg tracking-wide relative overflow-hidden text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  background: isLoading 
+                    ? 'linear-gradient(145deg, #64748b, #475569)'
+                    : 'linear-gradient(145deg, #3b82f6, #1d4ed8, #06b6d4)',
+                  boxShadow: isLoading 
+                    ? 'inset 10px 10px 20px rgba(71, 85, 105, 0.3), inset -10px -10px 20px rgba(148, 163, 184, 0.1), 0 0 20px rgba(59, 130, 246, 0.2)'
+                    : '12px 12px 24px rgba(59, 130, 246, 0.4), -12px -12px 24px rgba(255, 255, 255, 0.6), 0 0 30px rgba(59, 130, 246, 0.3), inset 0 0 0 rgba(255, 255, 255, 0.1)',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isLoading) {
+                    e.target.style.transform = 'scale(1.03)';
+                    e.target.style.boxShadow = '15px 15px 30px rgba(59, 130, 246, 0.5), -15px -15px 30px rgba(255, 255, 255, 0.8), 0 0 40px rgba(59, 130, 246, 0.5), inset 2px 2px 4px rgba(255, 255, 255, 0.2)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isLoading) {
+                    e.target.style.transform = 'scale(1)';
+                    e.target.style.boxShadow = '12px 12px 24px rgba(59, 130, 246, 0.4), -12px -12px 24px rgba(255, 255, 255, 0.6), 0 0 30px rgba(59, 130, 246, 0.3)';
+                  }
+                }}
+              >
+                {isLoading ? (
+                  <div className="flex items-center justify-center space-x-3">
+                    <div 
+                      className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"
+                      style={{
+                        filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.6))',
+                      }}
+                    ></div>
+                    <span style={{ textShadow: '0 0 10px rgba(255, 255, 255, 0.5)' }}>Ingresando...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center space-x-2">
+                    <Lock size={20} />
+                    <span style={{ textShadow: '0 0 10px rgba(255, 255, 255, 0.3), 2px 2px 4px rgba(0, 0, 0, 0.3)' }}>INGRESAR</span>
+                  </div>
+                )}
+              </button>
+            </form>
+
+            {/* Enlaces de ayuda */}
+            <div className="mt-8 text-center space-x-6 text-sm">
+              <Link
+                href="/auth/register"
+                className="font-medium text-blue-600 hover:text-blue-700 transition-all duration-200"
+                style={{
+                  textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 8px rgba(59, 130, 246, 0.3)',
+                }}
+              >
+                Regístrate Aquí
+              </Link>
+              <span className="text-gray-300">|</span>
+              <button
+                onClick={() => handleNavigation('/')}
+                className="font-medium text-blue-600 hover:text-blue-700 transition-all duration-200"
+                style={{
+                  textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 8px rgba(59, 130, 246, 0.3)',
+                }}
+              >
+                Contactar Soporte
+              </button>
+            </div>
+          </div>
+
+          {/* Footer con sombras azules */}
+          <div 
+            className="px-8 py-6 text-center text-xs text-gray-600 font-medium"
+            style={{
+              background: 'linear-gradient(145deg, #f1f5f9, #e2e8f0)',
+              textShadow: '1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 5px rgba(59, 130, 246, 0.1)',
+              boxShadow: 'inset 0 2px 4px rgba(59, 130, 246, 0.1), 0 0 10px rgba(59, 130, 246, 0.05)',
+            }}
+          >
+            Corporacion Universitaria Autónoma del Cauca © 2025 - Sistema de Homologaciones
           </div>
         </div>
-
-        {/* Footer minimalista */}
-        <div className="px-8 py-6 text-center text-xs text-blue-600 font-medium bg-gradient-to-t from-blue-100 to-blue-50">
-          <p>Autónoma del Cauca © 2025 - Sistema de Homologaciones</p>
-        </div>
       </div>
+
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { 
+            transform: translateY(0px) rotate(0deg); 
+            opacity: 0.7;
+          }
+          33% { 
+            transform: translateY(-15px) rotate(120deg); 
+            opacity: 1;
+          }
+          66% { 
+            transform: translateY(8px) rotate(240deg); 
+            opacity: 0.8;
+          }
+        }
+      `}</style>
     </div>
   );
 }

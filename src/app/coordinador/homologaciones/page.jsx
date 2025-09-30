@@ -23,241 +23,20 @@ import {
   GraduationCap,
   ChevronDown,
   ChevronUp,
-  RefreshCw
+  RefreshCw,
+  AlertTriangle
 } from 'lucide-react'
-
-// Datos mock para el coordinador
-const mockCoordinador = {
-  id: 1,
-  primer_nombre: "María",
-  segundo_nombre: "Elena",
-  primer_apellido: "González",
-  segundo_apellido: "Rodríguez",
-  email: "maria.gonzalez@unicauca.edu.co",
-  telefono: "3001234567",
-  rol: "Coordinador",
-  institucion_origen: "Universidad del Cauca"
-}
-
-// Datos mock para las solicitudes con diferentes estados
-const mockSolicitudes = [
-  {
-    id_solicitud: 1,
-    primer_nombre: "Juan",
-    segundo_nombre: "Carlos",
-    primer_apellido: "Pérez",
-    segundo_apellido: "Martínez",
-    email: "juan.perez@estudiante.com",
-    telefono: "3101234567",
-    numero_identificacion: "1005234567",
-    institucion_origen_nombre: "Universidad Nacional de Colombia",
-    programa_destino_nombre: "Ingeniería de Sistemas",
-    fecha_solicitud: "2025-07-15T10:30:00Z",
-    numero_radicado: "HR-2025-001",
-    estado: "Radicado",
-    municipio_nombre: "Bogotá",
-    departamento_nombre: "Cundinamarca"
-  },
-  {
-    id_solicitud: 2,
-    primer_nombre: "Ana",
-    segundo_nombre: "María",
-    primer_apellido: "López",
-    segundo_apellido: "García",
-    email: "ana.lopez@estudiante.com",
-    telefono: "3209876543",
-    numero_identificacion: "1010567890",
-    institucion_origen_nombre: "Universidad de Antioquia",
-    programa_destino_nombre: "Administración de Empresas",
-    fecha_solicitud: "2025-07-16T14:15:00Z",
-    numero_radicado: "HR-2025-002",
-    estado: "Radicado",
-    municipio_nombre: "Medellín",
-    departamento_nombre: "Antioquia"
-  },
-  {
-    id_solicitud: 3,
-    primer_nombre: "Carlos",
-    segundo_nombre: "Andrés",
-    primer_apellido: "Ramírez",
-    segundo_apellido: "Torres",
-    email: "carlos.ramirez@estudiante.com",
-    telefono: "3159876543",
-    numero_identificacion: "1006789012",
-    institucion_origen_nombre: "Universidad del Valle",
-    programa_destino_nombre: "Psicología",
-    fecha_solicitud: "2025-07-18T09:45:00Z",
-    numero_radicado: "HR-2025-003",
-    estado: "En Revision",
-    municipio_nombre: "Cali",
-    departamento_nombre: "Valle del Cauca"
-  },
-  {
-    id_solicitud: 4,
-    primer_nombre: "Laura",
-    segundo_nombre: "Sofía",
-    primer_apellido: "Herrera",
-    segundo_apellido: "Morales",
-    email: "laura.herrera@estudiante.com",
-    telefono: "3008765432",
-    numero_identificacion: "1007890123",
-    institucion_origen_nombre: "Pontificia Universidad Javeriana",
-    programa_destino_nombre: "Derecho",
-    fecha_solicitud: "2025-07-10T16:20:00Z",
-    numero_radicado: "HR-2025-004",
-    estado: "Aprobada",
-    municipio_nombre: "Bogotá",
-    departamento_nombre: "Cundinamarca"
-  },
-  {
-    id_solicitud: 5,
-    primer_nombre: "Diego",
-    segundo_nombre: "Alejandro",
-    primer_apellido: "Vargas",
-    segundo_apellido: "Quintero",
-    email: "diego.vargas@estudiante.com",
-    telefono: "3121234567",
-    numero_identificacion: "1008901234",
-    institucion_origen_nombre: "Universidad de los Andes",
-    programa_destino_nombre: "Ingeniería Industrial",
-    fecha_solicitud: "2025-07-24T08:00:00Z",
-    numero_radicado: "HR-2025-005",
-    estado: "Radicado",
-    municipio_nombre: "Bogotá",
-    departamento_nombre: "Cundinamarca"
-  },
-  {
-    id_solicitud: 6,
-    primer_nombre: "Valentina",
-    segundo_nombre: "Isabel",
-    primer_apellido: "Castro",
-    segundo_apellido: "Mendoza",
-    email: "valentina.castro@estudiante.com",
-    telefono: "3186543210",
-    numero_identificacion: "1009012345",
-    institucion_origen_nombre: "Universidad Externado de Colombia",
-    programa_destino_nombre: "Comunicación Social",
-    fecha_solicitud: "2025-07-22T11:30:00Z",
-    numero_radicado: "HR-2025-006",
-    estado: "En Revision",
-    municipio_nombre: "Bogotá",
-    departamento_nombre: "Cundinamarca"
-  },
-  {
-    id_solicitud: 7,
-    primer_nombre: "Santiago",
-    segundo_nombre: "Mateo",
-    primer_apellido: "Jiménez",
-    segundo_apellido: "Rojas",
-    email: "santiago.jimenez@estudiante.com",
-    telefono: "3145678901",
-    numero_identificacion: "1010123456",
-    institucion_origen_nombre: "Universidad Pontificia Bolivariana",
-    programa_destino_nombre: "Arquitectura",
-    fecha_solicitud: "2025-07-08T13:45:00Z",
-    numero_radicado: "HR-2025-007",
-    estado: "Rechazada",
-    municipio_nombre: "Medellín",
-    departamento_nombre: "Antioquia"
-  },
-  {
-    id_solicitud: 8,
-    primer_nombre: "Camila",
-    segundo_nombre: "Andrea",
-    primer_apellido: "Ruiz",
-    segundo_apellido: "Sánchez",
-    email: "camila.ruiz@estudiante.com",
-    telefono: "3167890123",
-    numero_identificacion: "1011234567",
-    institucion_origen_nombre: "Universidad EAFIT",
-    programa_destino_nombre: "Medicina",
-    fecha_solicitud: "2025-07-24T15:10:00Z",
-    numero_radicado: "HR-2025-008",
-    estado: "Radicado",
-    municipio_nombre: "Medellín",
-    departamento_nombre: "Antioquia"
-  },
-  {
-    id_solicitud: 9,
-    primer_nombre: "Andrés",
-    segundo_nombre: "Felipe",
-    primer_apellido: "Mora",
-    segundo_apellido: "Delgado",
-    email: "andres.mora@estudiante.com",
-    telefono: "3134567890",
-    numero_identificacion: "1012345678",
-    institucion_origen_nombre: "Universidad Católica Luis Amigó",
-    programa_destino_nombre: "Contaduría Pública",
-    fecha_solicitud: "2025-07-12T10:15:00Z",
-    numero_radicado: "HR-2025-009",
-    estado: "Aprobada",
-    municipio_nombre: "Medellín",
-    departamento_nombre: "Antioquia"
-  },
-  {
-    id_solicitud: 10,
-    primer_nombre: "Isabella",
-    segundo_nombre: "Valentina",
-    primer_apellido: "García",
-    segundo_apellido: "Hernández",
-    email: "isabella.garcia@estudiante.com",
-    telefono: "3198765432",
-    numero_identificacion: "1013456789",
-    institucion_origen_nombre: "Universidad Minuto de Dios",
-    programa_destino_nombre: "Trabajo Social",
-    fecha_solicitud: "2025-07-20T16:45:00Z",
-    numero_radicado: "HR-2025-010",
-    estado: "En Revision",
-    municipio_nombre: "Popayán",
-    departamento_nombre: "Cauca"
-  },
-  {
-    id_solicitud: 11,
-    primer_nombre: "Sebastián",
-    segundo_nombre: "David",
-    primer_apellido: "Ortiz",
-    segundo_apellido: "Peña",
-    email: "sebastian.ortiz@estudiante.com",
-    telefono: "3112345678",
-    numero_identificacion: "1014567890",
-    institucion_origen_nombre: "Universidad Santo Tomás",
-    programa_destino_nombre: "Ingeniería Civil",
-    fecha_solicitud: "2025-07-14T09:30:00Z",
-    numero_radicado: "HR-2025-011",
-    estado: "Radicado",
-    municipio_nombre: "Bucaramanga",
-    departamento_nombre: "Santander"
-  },
-  {
-    id_solicitud: 12,
-    primer_nombre: "María",
-    segundo_nombre: "Fernanda",
-    primer_apellido: "Suárez",
-    segundo_apellido: "Vega",
-    email: "maria.suarez@estudiante.com",
-    telefono: "3176543210",
-    numero_identificacion: "1015678901",
-    institucion_origen_nombre: "Universidad Católica de Colombia",
-    programa_destino_nombre: "Enfermería",
-    fecha_solicitud: "2025-07-05T14:20:00Z",
-    numero_radicado: "HR-2025-012",
-    estado: "Rechazada",
-    municipio_nombre: "Bogotá",
-    departamento_nombre: "Cundinamarca"
-  }
-]
 
 export default function HomologacionesVista() {
   const router = useRouter()
   
-  // Estados para datos (usando mock data)
-  const [coordinador] = useState(mockCoordinador)
-  const [solicitudes] = useState(mockSolicitudes)
-  const [solicitudesFiltradas, setSolicitudesFiltradas] = useState(mockSolicitudes)
+  // Estados para datos de la API
+  const [solicitudes, setSolicitudes] = useState([])
+  const [solicitudesFiltradas, setSolicitudesFiltradas] = useState([])
   
-  // Estados de UI simulados
-  const [loadingCoordinador, setLoadingCoordinador] = useState(true)
+  // Estados de carga y errores
   const [loadingSolicitudes, setLoadingSolicitudes] = useState(true)
+  const [error, setError] = useState(null)
   
   // Estados de filtros
   const [filtroEstado, setFiltroEstado] = useState('todos')
@@ -265,24 +44,49 @@ export default function HomologacionesVista() {
   const [mostrarFiltros, setMostrarFiltros] = useState(false)
   const [ordenamiento, setOrdenamiento] = useState('fecha_desc')
 
-  // Estados disponibles
+  // Estados disponibles basados en los datos de la API
   const estadosDisponibles = [
     { id: 'todos', label: 'Todas las Solicitudes', color: 'gray', count: 0 },
     { id: 'Radicado', label: 'Radicadas', color: 'blue', count: 0 },
-    { id: 'En Revision', label: 'En Revisión', color: 'yellow', count: 0 },
-    { id: 'Aprobada', label: 'Aprobadas', color: 'green', count: 0 },
-    { id: 'Rechazada', label: 'Rechazadas', color: 'red', count: 0 }
+    { id: 'En revisión', label: 'En Revisión', color: 'yellow', count: 0 },
+    { id: 'Aprobado', label: 'Aprobadas', color: 'green', count: 0 },
+    { id: 'Rechazado', label: 'Rechazadas', color: 'red', count: 0 }
   ]
 
-  // Simular carga de datos
-  useEffect(() => {
-    setTimeout(() => {
-      setLoadingCoordinador(false)
-    }, 800)
-    
-    setTimeout(() => {
+  // Función para cargar datos de la API
+  const cargarSolicitudes = async () => {
+    try {
+      setLoadingSolicitudes(true)
+      setError(null)
+      
+      const response = await fetch('http://127.0.0.1:8000/api/solicitudes')
+      
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`)
+      }
+      
+      const data = await response.json()
+      
+      // Validar que data sea un array
+      if (!Array.isArray(data)) {
+        throw new Error('Los datos recibidos no tienen el formato esperado')
+      }
+      
+      setSolicitudes(data)
+      console.log('Solicitudes cargadas:', data.length)
+      
+    } catch (error) {
+      console.error('Error al cargar solicitudes:', error)
+      setError(error.message)
+      setSolicitudes([])
+    } finally {
       setLoadingSolicitudes(false)
-    }, 1200)
+    }
+  }
+
+  // Cargar datos al montar el componente
+  useEffect(() => {
+    cargarSolicitudes()
   }, [])
 
   // Obtener datos seguros con fallbacks
@@ -324,9 +128,9 @@ export default function HomologacionesVista() {
   const obtenerColorEstado = (estado) => {
     switch(estado) {
       case 'Radicado': return 'bg-blue-100 text-blue-800 border-blue-200'
-      case 'En Revision': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      case 'Aprobada': return 'bg-green-100 text-green-800 border-green-200'
-      case 'Rechazada': return 'bg-red-100 text-red-800 border-red-200'
+      case 'En revisión': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      case 'Aprobado': return 'bg-green-100 text-green-800 border-green-200'
+      case 'Rechazado': return 'bg-red-100 text-red-800 border-red-200'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
@@ -335,20 +139,16 @@ export default function HomologacionesVista() {
   const obtenerIconoEstado = (estado) => {
     switch(estado) {
       case 'Radicado': return <Clock className="w-4 h-4" />
-      case 'En Revision': return <AlertCircle className="w-4 h-4" />
-      case 'Aprobada': return <CheckCircle className="w-4 h-4" />
-      case 'Rechazada': return <XCircle className="w-4 h-4" />
+      case 'En revisión': return <AlertCircle className="w-4 h-4" />
+      case 'Aprobado': return <CheckCircle className="w-4 h-4" />
+      case 'Rechazado': return <XCircle className="w-4 h-4" />
       default: return <FileText className="w-4 h-4" />
     }
   }
 
-  // Función de actualización simulada
+  // Función de actualización
   const actualizarDatos = () => {
-    setLoadingSolicitudes(true)
-    setTimeout(() => {
-      setLoadingSolicitudes(false)
-      // Aquí podrías simular nuevos datos o mantener los existentes
-    }, 1000)
+    cargarSolicitudes()
   }
 
   // Filtrar y ordenar solicitudes
@@ -367,7 +167,8 @@ export default function HomologacionesVista() {
         obtenerNombreCompleto(s).toLowerCase().includes(terminoBusqueda) ||
         (s.numero_radicado || '').toLowerCase().includes(terminoBusqueda) ||
         (s.email || '').toLowerCase().includes(terminoBusqueda) ||
-        (s.institucion_origen_nombre || '').toLowerCase().includes(terminoBusqueda)
+        (s.institucion_origen_nombre || '').toLowerCase().includes(terminoBusqueda) ||
+        (s.numero_identificacion || '').toLowerCase().includes(terminoBusqueda)
       )
     }
 
@@ -410,17 +211,13 @@ export default function HomologacionesVista() {
     }))
   }
 
-  // Configurar usuario para sidebar
+  // Configurar usuario para sidebar (datos mock ya que no hay API de usuario)
   const currentUser = {
-    name: coordinador ? 
-      `${obtenerDatoSeguro(coordinador.primer_nombre, 'Nombre')} ${obtenerDatoSeguro(coordinador.primer_apellido, 'Apellido')}` :
-      'Usuario no encontrado',
-    email: coordinador ? 
-      obtenerDatoSeguro(coordinador.email, 'Email no encontrado') :
-      'Email no encontrado'
+    name: 'Coordinador',
+    email: 'coordinador@unicauca.edu.co'
   }
 
-  // Navegación a subvistas (simulada)
+  // Navegación a subvistas usando el id de la solicitud
   const navegarAInfo = (solicitud) => {
     console.log('Navegando a información de solicitud:', solicitud.id_solicitud)
     router.push(`/coordinador/homologaciones/${solicitud.id_solicitud}/ver-informacion`)
@@ -471,11 +268,13 @@ export default function HomologacionesVista() {
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <Phone className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-600">{obtenerDatoSeguro(solicitud.telefono, 'Teléfono no encontrado')}</span>
+            <span className="text-gray-600">{obtenerDatoSeguro(solicitud.telefono, 'Teléfono no disponible')}</span>
           </div>
           <div className="flex items-center space-x-2 text-sm">
             <User className="w-4 h-4 text-gray-500" />
-            <span className="text-gray-600">{obtenerDatoSeguro(solicitud.numero_identificacion, 'Identificación no encontrada')}</span>
+            <span className="text-gray-600">
+              {obtenerDatoSeguro(solicitud.tipo_identificacion, 'CC')} - {obtenerDatoSeguro(solicitud.numero_identificacion, 'ID no encontrada')}
+            </span>
           </div>
         </div>
         <div className="space-y-2">
@@ -490,7 +289,10 @@ export default function HomologacionesVista() {
           <div className="flex items-center space-x-2 text-sm">
             <MapPin className="w-4 h-4 text-gray-500" />
             <span className="text-gray-600">
-              {obtenerDatoSeguro(solicitud.municipio_nombre, 'Ciudad no encontrada')}, {obtenerDatoSeguro(solicitud.departamento_nombre, 'Departamento no encontrado')}
+              {solicitud.municipio_nombre && solicitud.departamento_nombre 
+                ? `${solicitud.municipio_nombre}, ${solicitud.departamento_nombre}` 
+                : obtenerDatoSeguro(solicitud.pais_nombre, 'Ubicación no encontrada')
+              }
             </span>
           </div>
         </div>
@@ -500,6 +302,17 @@ export default function HomologacionesVista() {
       <div className="bg-blue-50 rounded-lg p-3 mb-4">
         <p className="text-sm text-gray-600 mb-1">Programa de destino:</p>
         <p className="font-medium text-blue-900">{obtenerDatoSeguro(solicitud.programa_destino_nombre, 'Programa no encontrado')}</p>
+      </div>
+
+      {/* Estado de estudios */}
+      <div className="bg-gray-50 rounded-lg p-3 mb-4">
+        <p className="text-sm text-gray-600 mb-1">Estado de estudios:</p>
+        <p className="font-medium text-gray-700">
+          {solicitud.finalizo_estudios === 'Si' 
+            ? `Finalizó el ${formatearFecha(solicitud.fecha_finalizacion_estudios)}`
+            : `Último semestre: ${formatearFecha(solicitud.fecha_ultimo_semestre_cursado)}`
+          }
+        </p>
       </div>
 
       {/* Botones de acción */}
@@ -559,6 +372,23 @@ export default function HomologacionesVista() {
                 </button>
               </div>
 
+              {/* Mostrar error si existe */}
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-3">
+                  <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" />
+                  <div>
+                    <p className="text-red-800 font-medium">Error al cargar las solicitudes</p>
+                    <p className="text-red-600 text-sm">{error}</p>
+                  </div>
+                  <button
+                    onClick={actualizarDatos}
+                    className="ml-auto px-3 py-1 bg-red-100 text-red-800 rounded-md text-sm hover:bg-red-200 transition-colors"
+                  >
+                    Reintentar
+                  </button>
+                </div>
+              )}
+
               {/* Contadores por estado */}
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                 {calcularContadores().map((estado) => (
@@ -589,7 +419,7 @@ export default function HomologacionesVista() {
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                       type="text"
-                      placeholder="Buscar por nombre, radicado, email..."
+                      placeholder="Buscar por nombre, radicado, email, cédula..."
                       value={busqueda}
                       onChange={(e) => setBusqueda(e.target.value)}
                       className="w-full pl-10 pr-4 py-3 neu-card rounded-xl border-0 focus:ring-2 focus:ring-blue-500 text-sm"
@@ -637,7 +467,6 @@ export default function HomologacionesVista() {
                         ))}
                       </select>
                     </div>
-                    {/* Aquí se pueden agregar más filtros en el futuro */}
                   </div>
                 </div>
               )}
@@ -670,6 +499,7 @@ export default function HomologacionesVista() {
                       </div>
                     </div>
                     <div className="h-16 bg-gray-200 rounded-lg mb-4"></div>
+                    <div className="h-16 bg-gray-200 rounded-lg mb-4"></div>
                     <div className="flex space-x-3">
                       <div className="flex-1 h-12 bg-gray-200 rounded-xl"></div>
                       <div className="flex-1 h-12 bg-gray-200 rounded-xl"></div>
@@ -679,8 +509,23 @@ export default function HomologacionesVista() {
                 ))}
                 <div className="text-center py-8">
                   <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-                  <p className="text-gray-600">Cargando solicitudes...</p>
+                  <p className="text-gray-600">Cargando solicitudes desde la API...</p>
                 </div>
+              </div>
+            ) : error ? (
+              <div className="neu-card p-12 text-center">
+                <AlertTriangle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-red-600 mb-2">
+                  Error al cargar las solicitudes
+                </h3>
+                <p className="text-red-500 mb-4">{error}</p>
+                <button
+                  onClick={actualizarDatos}
+                  className="neu-button-primary px-6 py-3 rounded-xl hover:shadow-lg transition-all duration-300"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Reintentar
+                </button>
               </div>
             ) : solicitudesFiltradas.length > 0 ? (
               <>
@@ -697,7 +542,7 @@ export default function HomologacionesVista() {
                 
                 {solicitudesFiltradas.map((solicitud) => (
                   <TarjetaSolicitud 
-                    key={solicitud.id_solicitud || Math.random()} 
+                    key={solicitud.id_solicitud} 
                     solicitud={solicitud}
                   />
                 ))}
